@@ -1,0 +1,26 @@
+CoarseTri:
+SUNTANS coarse grid all-in-one folder,
+including SUNTANS grid, configuration file, executable file and
+a buildFolder shell script, which is capable of building folder and moving file.
+
+DATA:
+coast.bna: GNOME grid file, will be moved to GNOME folder when running.
+Galveston_NARR_20122016.nc: SUNTANS wind input file.
+GalvestonObs.db: database file that contains SUNTANS river boundary data. (generated running hydro_wrapper.py)
+GE_animation.txt: rewrite this file to make KML, this will be moved to GNOME folder when running.
+javascript.txt: rewrite this to make Google map plot, will be moved to GNOME folder when running. 
+NOAA_25_UTM_DEM.nc: SUNTANS bathymetry source file.
+TCOONTide.nc: SUNTANS tidal boundry source file. (generated running hydro_wrapper.py)
+txla_subset_HIS_2014.nc: SUNTANS initial condition source file.
+USGS_River.dbf USGS_River.nc USGS_River.shp USGS_Rivers.shx: SUNTANS river boundary file. (generated when running hydro_wrapper.py)
+
+GNOME:
+GNOME working folder, contains all necessary files.
+
+Tools:
+contains necessary modules. 
+
+bashrc: shell script that exports necessary library.
+hydro_wrapper.py: download input boundary data (tide, river, wind) and run SUNTANS. (main.py is an older version)
+oilspill_wrapper.py: function to make GNOME run.
+upper_oilspill_wrapper.py: run GNOME and generate visuliaztion file.
