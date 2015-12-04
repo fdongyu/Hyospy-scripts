@@ -81,7 +81,7 @@ def generateBI(start,end):
 ####
     sun.opt_bcseg = 'file' # Segment boundary condition option: 'constant' or 'file'
     sun.opt_bctype2 = 'constant' # Type 2 boundary condition option: 'constant'
-    sun.opt_bctype3 = 'file' # Type 3 boundary condition option: 'constant',
+    sun.opt_bctype3 = 'ROMS' # Type 3 boundary condition option: 'constant',
 #,'file','OTIS', 'ROMS', 'ROMSOTIS','ROMSFILE', 'ROMSOTISFILE'
 
     sun.bcpolygonfile = 'CoarseTri/gis/GalvCoarse_BndPoly_Rivs_TWDB.shp' # Shape file with fields 'marker' and 'edge_id'
@@ -276,7 +276,7 @@ def generateBI2(start,end):
 ###
 # Input file names
 ### 
-    sun.romsfile = ['DATA/txla_subset_HIS_2014.nc']
+    sun.romsfile = ['DATA/txla_subset_HIS.nc']
     sun.otisfile = 'DATA/Tides/Model_Mex'
     sun.dbasefile = 'DATA/GalvestonObs.db'
 
