@@ -12,7 +12,7 @@ import subprocess
 #subprocess.Popen('./bashrc', shell=True )
 
 from DownloadTool import downloadUSGSriver, downloadTCOONTide, updateWind, downloadROMS
-from FileTool import write2db, increaseT1, increaseT2, convertFormat, reviseDatFile
+from FileTool import write2db, increaseT1, increaseT2, increaseT3, convertFormat, reviseDatFile
 from suntans_driver import generateBI
 import pdb
 
@@ -31,7 +31,8 @@ def runSUNTANS(starttime,endtime):
     """
       
     (start,end)=increaseT1(starttime,endtime)
-    downloadROMS(starttime,endtime)    #download initial condition data  
+    (romst1,romst2)=increaseT3(starttime,endtime)
+    downloadROMS(romst1,romst2)    #download initial condition data  
     
     downloadUSGSriver(start,end)              	#download the river inflow data
     staid='022' 					#specify the station id to download tide data 

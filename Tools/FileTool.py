@@ -93,6 +93,12 @@ def increaseT2(starttime,endtime):
     t2=datetime.strptime(endtime,timeformat)+timedelta(days=1)
     return (str(t1.date()),str(t2.date()))
 
+def increaseT3(starttime,endtime):
+    timeformat='%Y-%m-%d'
+    t1=datetime.strptime(starttime,timeformat)-timedelta(days=1)
+    t2=datetime.strptime(endtime,timeformat)+timedelta(days=2)
+    return (str(t1.date()),str(t2.date()))
+
 def write2db(dbfile):
     '''
     The function below aims at writing the resulting river inflow data
