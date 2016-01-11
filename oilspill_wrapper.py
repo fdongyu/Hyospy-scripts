@@ -353,8 +353,10 @@ def run_mul_GNOME(x,y,starttime,endtime,period,dt,opt='SUNTANS'):
     opt--'SUNTANS' or 'ROMS' or 'both'
     '''
     yr=int(starttime[0:4]);
-    month=int(starttime[5:7].lstrip("0").replace("0", " "))
-    day=int(starttime[8:].lstrip("0").replace("0", " "))
+    #month=int(starttime[5:7].lstrip("0").replace("0", " "))
+    month=int(starttime[5:7].lstrip('0'))
+    #day=int(starttime[8:].lstrip("0").replace("0", " "))
+    day=int(starttime[8:].lstrip('0'))
     timeformat='%Y-%m-%d'
     diff=datetime.strptime(endtime,timeformat)-datetime.strptime(starttime,timeformat)
 
@@ -578,7 +580,7 @@ def duplicate(starttime,endtime,dt):
     SUN_starttime=datetime.strptime(starttime,timeformat)+timedelta(math.floor(min(cbp)/(24*3600./dt))+1)
     SUN_starttime=SUN_starttime.strftime(timeformat) ##SUNTANS starttime before particle cross ROMS boundary
     diff=datetime.strptime(endtime,timeformat)-datetime.strptime(SUN_starttime,timeformat) 
-    period=diff.days*24
+    period=diff.days*24 
 
     ####running SUNTANS from the SUN_starttime to endtime 
     hydro_wrapper.runSUNTANS(SUN_starttime, endtime) 
@@ -593,8 +595,11 @@ def duplicate(starttime,endtime,dt):
     
     
     yr=int(SUN_starttime[0:4]);
-    month=int(SUN_starttime[5:7].lstrip("0").replace("0", " "))
-    day=int(SUN_starttime[8:].lstrip("0").replace("0", " "))
+    #month=int(SUN_starttime[5:7].lstrip("0").replace("0", " "))
+    month=int(SUN_starttime[5:7].lstrip('0'))
+    #day=int(SUN_starttime[8:].lstrip("0").replace("0", " "))
+    day=int(SUN_starttime[8:].lstrip('0'))
+    
         
     row1='NetCDF Files'
     row2='[File]    ./txsuntans.nc'
@@ -606,6 +611,7 @@ def duplicate(starttime,endtime,dt):
     work_dir=os.getcwd()
     os.chdir(work_dir+'/GNOME/')
     scripting.make_images_dir()         
+    pdb.set_trace()
     model = make_model(coor,yr,month,day,period,dt,images_dir=os.getcwd()+"/images")
     wdd=[0.01,0.04]
     model.full_run(wdd,logger=True)

@@ -32,7 +32,7 @@ def runSUNTANS(starttime,endtime):
       
     (start,end)=increaseT1(starttime,endtime)
     (romst1,romst2)=increaseT3(starttime,endtime)
-    downloadROMS(romst1,romst2)    #download initial condition data  
+    downloadROMS(romst1,romst2,ROMSsrc='hindcast')    #download initial condition data  
     
     downloadUSGSriver(start,end)              	#download the river inflow data
     staid='022' 					#specify the station id to download tide data 

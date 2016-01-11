@@ -40,7 +40,7 @@ def HyosPy(starttime, endtime, period, mode=1):
     
     if mode==1:
         
-        downloadROMS(starttime,endtime)
+        downloadROMS(starttime,endtime,ROMSsrc='hindcast')
         ROMS_file=dire+'/DATA/'+'txla_subset_HIS.nc'
         ROMS_out=dire+'/GNOME/'+'hiroms_ss_rho.nc'        
         oilspill_wrapper.init_model(opt='ROMS')
@@ -65,7 +65,7 @@ def HyosPy(starttime, endtime, period, mode=1):
         
         print "under developing!!\n"
         ####use the ROMS current data to run GNOME####
-        downloadROMS(starttime,endtime)
+        downloadROMS(starttime,endtime, ROMSsrc='hindcast')
         ROMS_file=dire+'/DATA/'+'txla_subset_HIS.nc'
         ROMS_out=dire+'/GNOME/'+'hiroms_ss_rho.nc'
         oilspill_wrapper.init_model(opt='ROMS') #The option is 'ROMS', since will run GNOME using ROMS output first
@@ -90,6 +90,6 @@ def HyosPy(starttime, endtime, period, mode=1):
     
         
         
-starttime='2014-08-01'
-endtime='2014-08-02'
-HyosPy(starttime, endtime, 24, mode=2)
+starttime='2014-08-06'
+endtime='2014-08-10'
+HyosPy(starttime, endtime, 92, mode=3)

@@ -326,7 +326,7 @@ def getWindData(windID,setGNOME=True):
 
     return time, data
 
-def downloadROMS(starttime,endtime):
+def downloadROMS(starttime,endtime, ROMSsrc='forecast'):
     """
     This function is used to download the ROMS data from http://barataria.tamu.edu:8080/thredds/catalog.html
     The ROMS data is also subsetted to a certain area.
@@ -334,45 +334,60 @@ def downloadROMS(starttime,endtime):
     input:
         starttime = '2014-08-21'
         endtime   = '2014-08-22'
-        timelims: ('20140801000000','20140831000000')        
+        timelims: ('20140801000000','20140831000000')
+        ROMSsrc = 'forecast' or 'hindcast'
+        adding ROMSsrc flag is because the forecast ROMS data on the server is not stable and is always down        
     """
     timelims = (starttime.replace("-", "")+'000000', endtime.replace("-", "")+'000000')
-       
-    grdfile = 'http://barataria.tamu.edu:8080/thredds/dodsC/txla_nesting6_grid/txla_grd_v4_new.nc'
-    #grdfile = 'http://barataria.tamu.edu:8080/thredds/dodsC/NcML/txla_nesting6.nc'
     
-    #######specify the ROMS file on the server: http://barataria.tamu.edu:8080/thredds/ #######
-    #ncfiles=['http://barataria.tamu.edu:8080/thredds/dodsC/txla/roms/2014/ocean_his_'+starttime[5:7]+'.nc']
-    #ncfiles=['http://barataria.tamu.edu:8080/thredds/dodsC/oofv2/out/files/2014/ocean_his_0016.nc',\
-    #		'http://barataria.tamu.edu:8080/thredds/dodsC/oofv2/out/files/2014/ocean_his_0017.nc']
+    if ROMSsrc=='forecast':    
+        grdfile = 'http://barataria.tamu.edu:8080/thredds/dodsC/txla_nesting6_grid/txla_grd_v4_new.nc'
+        #grdfile = 'http://barataria.tamu.edu:8080/thredds/dodsC/NcML/txla_nesting6.nc'
+        
+        #######specify the ROMS file on the server: http://barataria.tamu.edu:8080/thredds/ #######
+        #ncfiles=['http://barataria.tamu.edu:8080/thredds/dodsC/txla/roms/2014/ocean_his_'+starttime[5:7]+'.nc']
+        #ncfiles=['http://barataria.tamu.edu:8080/thredds/dodsC/oofv2/out/files/2014/ocean_his_0016.nc',\
+        #		'http://barataria.tamu.edu:8080/thredds/dodsC/oofv2/out/files/2014/ocean_his_0017.nc']
     
-    def _int2str(num):
-            """
-            convert the month format
-            input a integer;
-            output a string;
-            """
-            if num<10:
-                return '0%s'%str(num)
-            else:
-                return '%s'%str(num)
+        def _int2str(num):
+                """
+                convert the month format
+                input a integer;
+                output a string;
+                """
+                if num<10:
+                    return '0%s'%str(num)
+                else:
+                    return '%s'%str(num)
         
-    basedir='http://barataria.tamu.edu:8080/thredds/dodsC/oofv2/out/files'
-    ncfiles=[]
-    start=2*string.atoi(starttime[5:7])-1
-    end=2*string.atoi(endtime[5:7])+1
-    if starttime[0:4]==endtime[0:4]:
-        print "beginning downloading ROMS data in %s"%starttime[0:4]
-    else:
-        raise IOError('Error downloading ROMS from the server, starttime endtime not in the same year')
-        
-    for i in range(start,end+1):
-        filestr='%s/%s/ocean_his_00%s.nc'%(basedir,starttime[0:4],_int2str(i))
+        basedir='http://barataria.tamu.edu:8080/thredds/dodsC/oofv2/out/files'
+        ncfiles=[]
+        start=2*string.atoi(starttime[5:7])-1
+        end=2*string.atoi(endtime[5:7])+1
+        if starttime[0:4]==endtime[0:4]:
+            print "beginning downloading ROMS data in %s"%starttime[0:4]
+        else:
+            raise IOError('Error downloading ROMS from the server, starttime endtime not in the same year')
+            
+        for i in range(start,end+1):
+            filestr='%s/%s/ocean_his_00%s.nc'%(basedir,starttime[0:4],_int2str(i))
+            ncfiles.append(filestr)
+    elif ROMSsrc=='hindcast':
+        """
+        This option is only an alternative, only when the forecast ROMS data is not accessible
+        """
+        grdfile = 'http://barataria.tamu.edu:8080/thredds/dodsC/NcML/txla_nesting6.nc'
+        #### specify the ROMS file on the server: http://barataria.tamu.edu:8080/thredds/ ####
+        basedir='http://barataria.tamu.edu:8080/thredds/dodsC/txla/roms'
+        ncfiles=[]
+        filestr='%s/%s/ocean_his_%s.nc'%(basedir,starttime[0:4],starttime[5:7])
         ncfiles.append(filestr)
+    else:
+        raise "There is no such option in choosing ROMS data source"
         
     #pdb.set_trace()
     #timelims = ('20140801000000','20140831000000')
-    bbox = [-95.53,-94.25,28.17,30.0]
+    bbox = [-95.2,-94.25,27.95,30.0]
     roms = roms_subset(ncfiles,bbox,timelims,gridfile=grdfile)
     outfile = os.getcwd()+'/DATA/txla_subset_HIS.nc'
     roms.Writefile(outfile)
